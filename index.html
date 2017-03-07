@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <script type="text/javascript">
+    Number.prototype.pad = function(size) {
+          var s = String(this);
+          while (s.length < (size || 2)) {s = "0" + s;}
+          return s;
+        }
+
+    var currentTime = new Date();
+    window.location = "daily/tweets-" + (currentTime.getMonth() + 1).pad() + "-" + currentTime.getDate().pad() + ".html"
+  </script>
+</body>
+</html>
