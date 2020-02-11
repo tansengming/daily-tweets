@@ -1,14 +1,15 @@
-require 'csv'
-require 'time'
-require 'rake/clean'
 require 'irb'
+require 'pathname'
+require 'json'
+require 'rake/clean'
+require 'time'
 
 class Tweet
   attr_reader :tweet_id, :created_at
 
   def initialize(row)
-    @tweet_id   = row['tweet_id']
-    @created_at = Time.parse(row['timestamp'])
+    @tweet_id   = row.dig('tweet', 'id')
+    @created_at = Time.parse(row.dig('tweet', 'created_at'))
     @row        = row
   end
 end
@@ -78,9 +79,13 @@ end
 
 CLEAN.include 'daily/tweets-*.html'
 
-task :parse_csv do
-  file   = 'tweets.csv'
-  tweets = CSV.read(file, headers:true).map{|row| Tweet.new(row)}
+task :parse_json do
+  tweet_path = Pathname.new('tweet.js')
+  tweet_json = tweet_path.read[25..-1]
+  tweets     =  JSON
+                .parse(tweet_json)
+                .map{ |row| Tweet.new(row) }
+
   mkdir_p 'daily'
 
   (1..12).each do |month|
