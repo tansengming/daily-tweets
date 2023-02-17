@@ -80,7 +80,7 @@ end
 CLEAN.include 'daily/tweets-*.html'
 
 task :parse_json do
-  tweet_path = Pathname.new('tweet.js')
+  tweet_path = Pathname.new('tweets.js')
   tweet_json = tweet_path.read[25..-1]
   tweets     =  JSON
                 .parse(tweet_json)
